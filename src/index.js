@@ -21,7 +21,7 @@ const pizzaData = [
     ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
     price: 12,
     photoName: "pizzas/spinaci.jpg",
-    soldOut: false,
+    soldOut: true,
   },
   {
     name: "Pizza Funghi",
@@ -67,27 +67,28 @@ function Menu() {
     <main className="menu">
       <h2>Our menu</h2>
       <ul className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza
-            name={pizza.name}
-            src={pizza.photoName}
-            ingredients={pizza.ingredients}
-            price={pizza.price}
-            key={pizza.name}
-          />
-        ))}
+        {pizzaData.length > 0 ? (
+          pizzaData.map((pizza) => <Pizza pizzaObj={pizza} />)
+        ) : (
+          <p>No items are added yet :)</p>
+        )}
       </ul>
     </main>
   );
 }
 function Pizza(props) {
+  // if (props.pizzaObj.soldOut) return null;
+
   return (
-    <li className="pizza">
-      <img src={props.src} alt={props.name} />
+    <li className={`pizza ${props.pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price}</span>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+
+        <span>
+          {props.pizzaObj.soldOut ? "SOLD OUT!" : props.pizzaObj.price}
+        </span>
       </div>
     </li>
   );
@@ -101,7 +102,7 @@ function Footer() {
   return (
     <footer className="footer">
       <p>We're currently {isOpen}</p>
-      {isOpen === "open" ? <button className="btn">Order Now</button> : ""}
+      {isOpen === "open" ? <button className="btn">Order Now</button> : null}
     </footer>
   );
   // return React.createElement("footer", null, "We' re currently open !");
